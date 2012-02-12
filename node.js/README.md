@@ -45,9 +45,9 @@ var client = conservatory.createClient({
 
 The options object contains three required properties:
 
-* `username`: The username for your Nodejitsu account
-* `password`: The password for your Nodejitsu account
-* `remoteUri`: The uri of the api host (typically (http://api.nodejitsu.com)[http://api.nodejitsu.com]).
+* `auth.username`: The username for your Nodejitsu account
+* `auth.password`: The password for your Nodejitsu account
+* `host`: The api host (typically http://conservatory.nodejitsu.com.
 
 ### client
 

@@ -83,6 +83,36 @@ Users.prototype.destroy = function (id, callback) {
 };
 
 //
+// ### function available (username, callback) 
+// #### @username {string} Username to check availability for.
+// #### @callback {function} Continuation to pass control to when complete
+// Checks the availability of the specified `username`.
+//
+Users.prototype.available = function (username, callback) {
+  this.request('GET', ['users', username, 'available'], callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function forgot (username, callback) 
+// #### @username {Object} username requesting password reset.
+// #### @params {Object} Object containing shake and new password, if applicable.
+// #### @callback {function} Continuation to pass control to when complete
+// Request an password reset email.
+//
+Users.prototype.forgot = function (username, params, callback) {
+  if (!callback && typeof params == 'function') {
+    callback = params;
+    params = {};
+  }
+
+  this.request('POST', ['users', username, 'forgot'], params, callback, function (res, result) {
+    return callback(null, result);
+  });
+};
+
+//
 // ### function addKey | updateKey (id, keyname, data, callback)
 // #### @id {string} Id of the user to add or update keys for.
 // #### @keyname {string} **Optional** Keyname to add or update.
@@ -118,7 +148,7 @@ Users.prototype.getKey = function (id, keyname, callback) {
   }
   
   this._request('GET', '/' + ['keys', id, keyname].join('/'), callback, function (res, result) {
-    callback(null, result.key);
+    callback(null, result && result.key);
   });
 };
 
@@ -136,6 +166,6 @@ Users.prototype.getKeys = function (id, callback) {
   }
   
   this._request('GET', '/' + ['keys', id].filter(Boolean).join('/'), callback, function (res, result) {
-    callback(null, result.keys);
+    callback(null, result && result.keys);
   });
 };

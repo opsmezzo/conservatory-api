@@ -24,6 +24,17 @@ var Users = exports.Users = function (options) {
 utile.inherits(Users, client.Client);
 
 //
+// ### function auth (callback)
+// #### @callback {function} Continuation to pass control to when complete
+// Tests the authentication of the user identified in this process.
+//
+Users.prototype.auth = function (callback) {
+  this._request('GET', '/auth', callback, function (res, body) {
+    callback(null, true);
+  });
+};
+
+//
 // ### function create (user, callback)
 // #### @user {string} User to create.
 // #### @callback {function} Continuation to pass control back to when complete.
@@ -89,7 +100,7 @@ Users.prototype.destroy = function (id, callback) {
 // Checks the availability of the specified `username`.
 //
 Users.prototype.available = function (username, callback) {
-  this.request('GET', ['users', username, 'available'], callback, function (res, result) {
+  this._request('GET', '/users/' + username + '/available', callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -107,7 +118,7 @@ Users.prototype.forgot = function (username, params, callback) {
     params = {};
   }
 
-  this.request('POST', ['users', username, 'forgot'], params, callback, function (res, result) {
+  this._request('POST', '/users/' + username + '/forgot', params, callback, function (res, result) {
     return callback(null, result);
   });
 };

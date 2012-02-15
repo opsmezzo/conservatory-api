@@ -22,11 +22,13 @@ var Client = exports.Client = function (options) {
   // 
   // TODO (indexzero): Configure the provisioner port globally somewhere.
   //
-  this.host = options.host || 'localhost';
-  this.port = options.port || 9000;
+  this.config = {
+    host: options.host || 'localhost',
+    port: options.port || 9000
+  };
   
   if (options.auth) {
-    this.auth = 'Basic ' + base64.encode([options.auth.username, options.auth.password].join(':'));
+    this.config.auth = 'Basic ' + base64.encode([options.auth.username, options.auth.password].join(':'));
   }
 };
 
@@ -56,7 +58,7 @@ Client.prototype.successCodes = {
 // is configured to request against.
 //
 Client.prototype.__defineGetter__('remoteUri', function () {
-  return 'http://' + this.host + ':' + this.port;
+  return 'http://' + this.config.host + ':' + this.config.port;
 });
 
 //
@@ -85,8 +87,8 @@ Client.prototype._request = function (method, uri /* variable arguments */) {
     }
   };
   
-  if (this.auth) {
-    options.headers['Authorization'] = this.auth;
+  if (this.config.auth) {
+    options.headers['Authorization'] = this.config.auth;
   }
 
   if (body) {

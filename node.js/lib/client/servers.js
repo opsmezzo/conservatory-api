@@ -99,6 +99,19 @@ Servers.prototype.listRole = function (role, callback) {
 };
 
 //
+// ### function list (role, callback)
+// #### @role {string} Group of the servers to list.
+// #### @callback {function} Continuation to pass control back to when complete.
+// Lists all servers managed by the provisioner associated with this instance
+// for the specified `group`. 
+//
+Servers.prototype.listGroup = function (group, callback) {
+  this._request('GET', '/servers/' + group + '/group', callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
 // ### function list (server)
 // #### @server {object} Properties to update the server with.
 // #### @callback {function} Continuation to pass control back to when complete.

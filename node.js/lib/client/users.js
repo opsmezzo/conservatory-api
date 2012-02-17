@@ -54,7 +54,7 @@ Users.prototype.create = function (user, callback) {
 //
 Users.prototype.get = function (id, callback) {
   this._request('GET', '/users/' + id, callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.user);
   });
 };
 
@@ -65,7 +65,7 @@ Users.prototype.get = function (id, callback) {
 //
 Users.prototype.list = function (callback) {
   this._request('GET', '/users', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.users);
   });
 };
 

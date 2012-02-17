@@ -42,7 +42,7 @@ Groups.prototype.create = function (group, callback) {
 //
 Groups.prototype.get = function (id, callback) {
   this._request('GET', '/groups/' + id, callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.group);
   });
 };
 
@@ -53,7 +53,7 @@ Groups.prototype.get = function (id, callback) {
 //
 Groups.prototype.list = function (callback) {
   this._request('GET', '/groups', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.groups);
   });
 };
 
@@ -64,7 +64,7 @@ Groups.prototype.list = function (callback) {
 //
 Groups.prototype.listProvider = function (provider, callback) {
   this._request('GET', '/groups/' + provider + '/provider', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.groups);
   });
 };
 

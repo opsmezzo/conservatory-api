@@ -70,7 +70,7 @@ Servers.prototype.free = function (id, callback) {
 //
 Servers.prototype.get = function (id, callback) {
   this._request('GET', '/servers/' + id, callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.server);
   });
 };
 
@@ -81,7 +81,7 @@ Servers.prototype.get = function (id, callback) {
 //
 Servers.prototype.list = function (callback) {
   this._request('GET', '/servers', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.servers);
   })
 };
 
@@ -94,7 +94,7 @@ Servers.prototype.list = function (callback) {
 //
 Servers.prototype.listRole = function (role, callback) {
   this._request('GET', '/servers/' + role + '/role', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.servers);
   });
 };
 
@@ -107,7 +107,7 @@ Servers.prototype.listRole = function (role, callback) {
 //
 Servers.prototype.listGroup = function (group, callback) {
   this._request('GET', '/servers/' + group + '/group', callback, function (res, result) {
-    callback(null, result);
+    callback(null, result.servers);
   });
 };
 

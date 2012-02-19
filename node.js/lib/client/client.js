@@ -17,18 +17,25 @@ var events = require('events'),
 //
 var Client = exports.Client = function (options) {
   events.EventEmitter.call(this);
-  options = options || {};
+  this.options = options || {};
     
+  if (typeof this.options.get !== 'function') {
+    this.options.get = function (key) {
+      return this[key];
+    }
+  }
+  
   // 
   // TODO (indexzero): Configure the provisioner port globally somewhere.
   //
   this.config = {
     host: options.host || 'localhost',
-    port: options.port || 9000
+    port: options.port || 9000,
+    auth: options.auth
   };
   
-  if (options.auth) {
-    this.config.auth = 'Basic ' + base64.encode([options.auth.username, options.auth.password].join(':'));
+  if (options.auth && options.auth.username && options.auth.password) {
+    this._auth = 'Basic ' + base64.encode([options.auth.username, options.auth.password].join(':'));
   }
 };
 
@@ -41,6 +48,8 @@ utile.inherits(Client, events.EventEmitter);
 // off of `/lib/conservatory/provisioner/service.js`
 Client.prototype.failCodes = {
   400: 'Bad Request',
+  401: 'Not authorized',
+  403: 'Forbidden',
   404: 'Item not found',
   500: 'Internal Server Error'
 };
@@ -87,8 +96,12 @@ Client.prototype._request = function (method, uri /* variable arguments */) {
     }
   };
   
-  if (this.config.auth) {
-    options.headers['Authorization'] = this.config.auth;
+  if (!this._auth && this.config.auth.username && this.config.auth.password) {
+    this._auth = 'Basic ' + base64.encode([this.config.auth.username, this.config.auth.password].join(':'));
+  }
+  
+  if (this._auth) {
+    options.headers['Authorization'] = this._auth;
   }
 
   if (body) {

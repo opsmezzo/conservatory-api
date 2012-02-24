@@ -108,7 +108,7 @@ Client.prototype._request = function (method, uri /* variable arguments */) {
     options.body = JSON.stringify(body);
   }
 
-  request(options, function (err, response, body) {
+  return request(options, function (err, response, body) {
     if (err) {
       return callback(err);
     }

@@ -29,7 +29,11 @@ utile.inherits(Systems, client.Client);
 // Creates the specified `system`.
 //
 Systems.prototype.create = function (system, callback) {
-  this._request('POST', '/systems/' + system.name, system, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/systems/' + system.name, 
+    body: system
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -41,7 +45,7 @@ Systems.prototype.create = function (system, callback) {
 // Responds with information about the system with the specified `name`.
 //
 Systems.prototype.get = function (name, callback) {
-  this._request('GET', '/systems/' + name, callback, function (res, result) {
+  this._request('/systems/' + name, callback, function (res, result) {
     callback(null, result.system);
   });
 };
@@ -52,7 +56,7 @@ Systems.prototype.get = function (name, callback) {
 // Lists all systems managed by the provisioner associated with this instance. 
 //
 Systems.prototype.list = function (callback) {
-  this._request('GET', '/systems', callback, function (res, result) {
+  this._request('/systems', callback, function (res, result) {
     callback(null, result.systems);
   });
 };
@@ -64,7 +68,10 @@ Systems.prototype.list = function (callback) {
 // Destroys the System for the server with the specified name.
 //
 Systems.prototype.destroy = function (name, callback) {
-  this._request('DELETE', '/systems/' + name, callback, function (res, result) {
+  this._request({
+    method: 'DELETE', 
+    path: '/systems/' + name
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -77,7 +84,10 @@ Systems.prototype.destroy = function (name, callback) {
 // Removes the `version` from the specified `system`.
 //
 Systems.prototype.removeVersion = function (name, version, callback) {
-  this._request('DELETE', '/systems/' + name + '/' + version, callback, function (res, result) {
+  this._request({
+    method: 'DELETE', 
+    path: '/systems/' + name + '/' + version
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -89,7 +99,11 @@ Systems.prototype.removeVersion = function (name, version, callback) {
 // Adds the version represented by `system` to the system.
 //
 Systems.prototype.addVersion = function (system, callback) {
-  this._request('PUT', '/systems/' + system._id || system.name, callback, function (res, result) {
+  this._request({
+    method: 'PUT', 
+    path: '/systems/' + (system._id || system.name),
+    body: system
+  }, callback, function (res, result) {
     callback(null, result);
   });  
 };
@@ -102,7 +116,13 @@ Systems.prototype.addVersion = function (system, callback) {
 // Returns an HTTP stream for uploading the `version` to the `system`.
 //
 Systems.prototype.upload = function (name, version, callback) {
-  return this._request('PUT', '/systems/' + name + '/' + version, callback);
+  return this._request({
+    method: 'PUT', 
+    path: '/systems/' + name + '/' + version, 
+    headers: { 'content-type': 'application/x-tar-gz' }
+  }, callback, function (res, result) {
+    callback(null, res);
+  });
 };
 
 //
@@ -113,5 +133,7 @@ Systems.prototype.upload = function (name, version, callback) {
 // Returns an HTTP stream for downloading the `version` from the `system`.
 //
 Systems.prototype.download = function (name, version, callback) {
-  return this._request('GET', '/systems/' + name + '/' + version, callback);
+  return this._request('/systems/' + name + '/' + version, callback, function (res, result) {
+    callback(null, res);
+  });
 };

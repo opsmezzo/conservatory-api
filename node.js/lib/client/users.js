@@ -29,7 +29,7 @@ utile.inherits(Users, client.Client);
 // Tests the authentication of the user identified in this process.
 //
 Users.prototype.auth = function (callback) {
-  this._request('GET', '/auth', callback, function (res, body) {
+  this._request('/auth', callback, function (res, body) {
     callback(null, true);
   });
 };
@@ -41,19 +41,23 @@ Users.prototype.auth = function (callback) {
 // Creates a user with the data specified.
 //
 Users.prototype.create = function (user, callback) {
-  this._request('POST', '/users/' + user.username, user, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/users/' + user.username, 
+    body: user
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
 
 //
-// ### function get (id, callback)
-// #### @id {string} Id of the user to retrieve.
+// ### function get (name, callback)
+// #### @name {string} Name of the user to retrieve.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Responds with information about the user with the specified `id`.
+// Responds with information about the user with the specified `name`.
 //
-Users.prototype.get = function (id, callback) {
-  this._request('GET', '/users/' + id, callback, function (res, result) {
+Users.prototype.get = function (name, callback) {
+  this._request('/users/' + name, callback, function (res, result) {
     callback(null, result.user);
   });
 };
@@ -64,7 +68,7 @@ Users.prototype.get = function (id, callback) {
 // Lists all users managed by the provisioner associated with this instance. 
 //
 Users.prototype.list = function (callback) {
-  this._request('GET', '/users', callback, function (res, result) {
+  this._request('/users', callback, function (res, result) {
     callback(null, result.users);
   });
 };
@@ -76,19 +80,25 @@ Users.prototype.list = function (callback) {
 // Updates the user with the properties specified.
 //
 Users.prototype.update = function (user, callback) {
-  this._request('PUT', '/users/' + user._id || user.username, callback, function (res, result) {
+  this._request({
+    method: 'PUT', 
+    path: '/users/' + (user._id || user.username)
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
 
 //
-// ### function destroy (id)
-// #### @id {object} Id of the user to destroy.
+// ### function destroy (name)
+// #### @name {object} Name of the user to destroy.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Destroys the Group for the server with the specified id.
+// Destroys the Group for the server with the specified name.
 //
-Users.prototype.destroy = function (id, callback) {
-  this._request('DELETE', '/users/' + id, callback, function (res, result) {
+Users.prototype.destroy = function (name, callback) {
+  this._request({
+    method: 'DELETE', 
+    path: '/users/' + name
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -100,7 +110,7 @@ Users.prototype.destroy = function (id, callback) {
 // Checks the availability of the specified `username`.
 //
 Users.prototype.available = function (username, callback) {
-  this._request('GET', '/users/' + username + '/available', callback, function (res, result) {
+  this._request('/users/' + username + '/available', callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -118,65 +128,73 @@ Users.prototype.forgot = function (username, params, callback) {
     params = {};
   }
 
-  this._request('POST', '/users/' + username + '/forgot', params, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/users/' + username + '/forgot', 
+    body: params
+  }, callback, function (res, result) {
     return callback(null, result);
   });
 };
 
 //
-// ### function addKey | updateKey (id, keyname, data, callback)
-// #### @id {string} Id of the user to add or update keys for.
+// ### function addKey | updateKey (name, keyname, data, callback)
+// #### @name {string} Name of the user to add or update keys for.
 // #### @keyname {string} **Optional** Keyname to add or update.
 // #### @data {string} Data for the key
 // #### @callback {function} Continuation to respond to when complete.
-// Adds or updates `keyname` for the specified user `id` with the `data`.
+// Adds or updates `keyname` for the specified user `name` with the `data`.
 // If no `keyname` is supplied then `publicKey` will be used.
 //
-Users.prototype.addKey = Users.prototype.updateKey = function (id, keyname, data, callback) {
+Users.prototype.addKey = Users.prototype.updateKey = function (name, keyname, data, callback) {
   if (arguments.length === 3) {
     callback = data;
     data = keyname;
     keyname = 'publicKey';
   }
   
-  this._request('POST', '/' + ['keys', id, keyname].join('/'), { key: data }, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/' + ['keys', name, keyname].join('/'), 
+    body: { key: data }
+  }, callback, function (res, result) {
     callback(null);
   });
 };
 
 //
-// ### function addKey | updateKey (id, keyname, data, callback)
-// #### @id {string} Id of the user to add or update keys for.
+// ### function addKey | updateKey (name, keyname, data, callback)
+// #### @name {string} Name of the user to add or update keys for.
 // #### @keyname {string} **Optional** Keyname to add or update.
 // #### @callback {function} Continuation to respond to when complete.
-// Retrieves `keyname` for the specified user `id`. If no `keyname` is supplied 
+// Retrieves `keyname` for the specified user `name`. If no `keyname` is supplied 
 // then `publicKey` will be retrieved.
 //
-Users.prototype.getKey = function (id, keyname, callback) {
+Users.prototype.getKey = function (name, keyname, callback) {
   if (arguments.length === 2) {
     callback = keyname;
     keyname = 'publicKey';
   }
   
-  this._request('GET', '/' + ['keys', id, keyname].join('/'), callback, function (res, result) {
+  this._request('/' + ['keys', name, keyname].join('/'), callback, function (res, result) {
     callback(null, result && result.key);
   });
 };
 
 //
-// ### function addKey | updateKey (id, keyname, data, callback)
-// #### @id {string} **Optional** Id of the user to get all keys for.
+// ### function addKey | updateKey (name, keyname, data, callback)
+// #### @name {string} **Optional** Name of the user to get all keys for.
 // #### @callback {function} Continuation to respond to when complete.
-// Retrieves all keys for the user with the specified `id`. If no `id`
+// Retrieves all keys for the user with the specified `name`. If no `name`
 // is supplied then all keys for all users will be returned.
 //
-Users.prototype.getKeys = function (id, callback) {
-  if (!callback && typeof id === 'function') {
-    callback = id;
-    id = null;
+Users.prototype.getKeys = function (name, callback) {
+  if (!callback && typeof name === 'function') {
+    callback = name;
+    name = null;
   }
   
-  this._request('GET', '/' + ['keys', id].filter(Boolean).join('/'), callback, function (res, result) {
+  this._request('/' + ['keys', name].filter(Boolean).join('/'), callback, function (res, result) {
     callback(null, result && result.keys);
   });
 };

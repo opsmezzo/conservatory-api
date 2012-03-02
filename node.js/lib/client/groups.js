@@ -1,5 +1,5 @@
 /*
- * servers.js: Client for the provisioner `servers` resource.
+ * servers.js: Client for the provisioner `groups` resource.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -26,22 +26,26 @@ utile.inherits(Groups, client.Client);
 // ### function create (group, callback)
 // #### @group {Object} Group to create.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Responds with information about the group with the specified `id`.
+// Creates the specified `group`.
 //
 Groups.prototype.create = function (group, callback) {
-  this._request('POST', '/groups/' + group.name, group, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/groups/' + group.name,
+    body: group
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
 
 //
-// ### function get (id, callback)
-// #### @id {string} Id of the group to retrieve.
+// ### function get (name, callback)
+// #### @name {string} Name of the group to retrieve.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Responds with information about the group with the specified `id`.
+// Responds with information about the group with the specified `name`.
 //
-Groups.prototype.get = function (id, callback) {
-  this._request('GET', '/groups/' + id, callback, function (res, result) {
+Groups.prototype.get = function (name, callback) {
+  this._request('/groups/' + name, callback, function (res, result) {
     callback(null, result.group);
   });
 };
@@ -52,7 +56,7 @@ Groups.prototype.get = function (id, callback) {
 // Lists all groups managed by the provisioner associated with this instance. 
 //
 Groups.prototype.list = function (callback) {
-  this._request('GET', '/groups', callback, function (res, result) {
+  this._request('/groups', callback, function (res, result) {
     callback(null, result.groups);
   });
 };
@@ -63,7 +67,7 @@ Groups.prototype.list = function (callback) {
 // Lists all groups managed by the provisioner associated with this instance. 
 //
 Groups.prototype.listProvider = function (provider, callback) {
-  this._request('GET', '/groups/' + provider + '/provider', callback, function (res, result) {
+  this._request('/groups/' + provider + '/provider', callback, function (res, result) {
     callback(null, result.groups);
   });
 };
@@ -75,19 +79,25 @@ Groups.prototype.listProvider = function (provider, callback) {
 // Updates the group with the properties specified.
 //
 Groups.prototype.update = function (user, callback) {
-  this._request('PUT', '/groups/' + group._id || group.name, callback, function (res, result) {
+  this._request({
+    method: 'PUT', 
+    path: '/groups/' + (group._id || group.name)
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
 
 //
-// ### function destroy (id)
-// #### @id {object} Id of the group to destroy.
+// ### function destroy (name)
+// #### @name {object} Name of the group to destroy.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Destroys the Group for the server with the specified id.
+// Destroys the Group for the server with the specified name.
 //
-Groups.prototype.destroy = function (id, callback) {
-  this._request('DELETE', '/groups/' + id, callback, function (res, result) {
+Groups.prototype.destroy = function (name, callback) {
+  this._request({
+    method: 'DELETE', 
+    path: '/groups/' + name
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };

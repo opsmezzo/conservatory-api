@@ -34,7 +34,11 @@ Servers.prototype.provision = function (options, callback) {
   }
   
   options.count = options.count || 1;
-  this._request('POST', '/provision', options, callback, function (res, result) {
+  this._request({
+    method: 'POST', 
+    path: '/provision', 
+    body: options
+  }, callback, function (res, result) {
     callback(null, result.jobId, result.servers);
   });
 };
@@ -45,7 +49,7 @@ Servers.prototype.provision = function (options, callback) {
 // Provisions a new server from this instance.
 //
 Servers.prototype.getPosition = function (jobId, callback) {
-  this._request('GET', '/jobs/' + jobId, callback, function (res, result) {
+  this._request('/jobs/' + jobId, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -57,7 +61,10 @@ Servers.prototype.getPosition = function (jobId, callback) {
 // Attempts to free the server with the specified `id`.
 //
 Servers.prototype.free = function (id, callback) {
-  this._request('DELETE', '/provision/' + id, callback, function (res, result) {
+  this._request({
+    method: 'DELETE', 
+    path: '/provision/' + id
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };
@@ -69,7 +76,7 @@ Servers.prototype.free = function (id, callback) {
 // Responds with information about the server with the specified `id`.
 //
 Servers.prototype.get = function (id, callback) {
-  this._request('GET', '/servers/' + id, callback, function (res, result) {
+  this._request('/servers/' + id, callback, function (res, result) {
     callback(null, result.server);
   });
 };
@@ -80,7 +87,7 @@ Servers.prototype.get = function (id, callback) {
 // Lists all servers managed by the provisioner associated with this instance. 
 //
 Servers.prototype.list = function (callback) {
-  this._request('GET', '/servers', callback, function (res, result) {
+  this._request('/servers', callback, function (res, result) {
     callback(null, result.servers);
   })
 };
@@ -93,7 +100,7 @@ Servers.prototype.list = function (callback) {
 // for the specified `role`. 
 //
 Servers.prototype.listRole = function (role, callback) {
-  this._request('GET', '/servers/' + role + '/role', callback, function (res, result) {
+  this._request('/servers/' + role + '/role', callback, function (res, result) {
     callback(null, result.servers);
   });
 };
@@ -106,7 +113,7 @@ Servers.prototype.listRole = function (role, callback) {
 // for the specified `group`. 
 //
 Servers.prototype.listGroup = function (group, callback) {
-  this._request('GET', '/servers/' + group + '/group', callback, function (res, result) {
+  this._request('/servers/' + group + '/group', callback, function (res, result) {
     callback(null, result.servers);
   });
 };
@@ -118,7 +125,10 @@ Servers.prototype.listGroup = function (group, callback) {
 // Updates the server with the properties specified.
 //
 Servers.prototype.update = function (server, callback) {
-  this._request('PUT', '/servers/' + server._id || server.id, callback, function (res, result) {
+  this._request({
+    method: 'PUT', 
+    path: '/servers/' + (server._id || server.id)
+  }, callback, function (res, result) {
     callback(null, result);
   });
 };

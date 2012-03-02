@@ -26,7 +26,7 @@ utile.inherits(Systems, client.Client);
 // ### function create (system, callback)
 // #### @system {Object} System to create.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Responds with information about the system with the specified `id`.
+// Creates the specified `system`.
 //
 Systems.prototype.create = function (system, callback) {
   this._request('POST', '/systems/' + system.name, system, callback, function (res, result) {
@@ -35,13 +35,13 @@ Systems.prototype.create = function (system, callback) {
 };
 
 //
-// ### function get (id, callback)
-// #### @id {string} Id of the system to retrieve.
+// ### function get (name, callback)
+// #### @name {string} Name of the system to retrieve.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Responds with information about the system with the specified `id`.
+// Responds with information about the system with the specified `name`.
 //
-Systems.prototype.get = function (id, callback) {
-  this._request('GET', '/systems/' + id, callback, function (res, result) {
+Systems.prototype.get = function (name, callback) {
+  this._request('GET', '/systems/' + name, callback, function (res, result) {
     callback(null, result.system);
   });
 };
@@ -58,33 +58,60 @@ Systems.prototype.list = function (callback) {
 };
 
 //
-// ### function update (system, callback)
-// #### @system {object} Properties to update the system with.
+// ### function destroy (name)
+// #### @name {object} Name of the system to destroy.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Updates the system with the properties specified.
+// Destroys the System for the server with the specified name.
 //
-Systems.prototype.update = function (system, callback) {
+Systems.prototype.destroy = function (name, callback) {
+  this._request('DELETE', '/systems/' + name, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function removeVersion (system, callback)
+// #### @name {string} Name of the system to remove `version`.
+// #### @version {string} Version to remove from the system
+// #### @callback {function} Continuation to pass control back to when complete.
+// Removes the `version` from the specified `system`.
+//
+Systems.prototype.removeVersion = function (name, version, callback) {
+  this._request('DELETE', '/systems/' + name + '/' + version, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function addVersion (system, callback)
+// #### @system {object} Properties for the new system version.
+// #### @callback {function} Continuation to pass control back to when complete.
+// Adds the version represented by `system` to the system.
+//
+Systems.prototype.addVersion = function (system, callback) {
   this._request('PUT', '/systems/' + system._id || system.name, callback, function (res, result) {
     callback(null, result);
-  });
+  });  
 };
 
 //
-// ### function destroy (id)
-// #### @id {object} Id of the system to destroy.
+// ### function upload (name, version, callback)
+// #### @name {string} Name of the system to upload.
+// #### @version {string} Version of the system to upload.
 // #### @callback {function} Continuation to pass control back to when complete.
-// Destroys the System for the server with the specified id.
+// Returns an HTTP stream for uploading the `version` to the `system`.
 //
-Systems.prototype.destroy = function (id, callback) {
-  this._request('DELETE', '/systems/' + id, callback, function (res, result) {
-    callback(null, result);
-  });
-};
-
 Systems.prototype.upload = function (name, version, callback) {
   return this._request('PUT', '/systems/' + name + '/' + version, callback);
 };
 
+//
+// ### function download (name, version, callback)
+// #### @name {string} Name of the system to download.
+// #### @version {string} Version of the system to download.
+// #### @callback {function} Continuation to pass control back to when complete.
+// Returns an HTTP stream for downloading the `version` from the `system`.
+//
 Systems.prototype.download = function (name, version, callback) {
   return this._request('GET', '/systems/' + name + '/' + version, callback);
-}
+};

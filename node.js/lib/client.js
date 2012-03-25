@@ -6,16 +6,18 @@
  */
  
 exports.Client  = require('./client/client').Client;
+exports.Groups  = require('./client/groups').Groups;
+exports.Roles   = require('./client/roles').Roles;
 exports.Systems = require('./client/systems').Systems;
 exports.Servers = require('./client/servers').Servers;
-exports.Groups  = require('./client/groups').Groups;
 exports.Users   = require('./client/users').Users;
 
 exports.createClient = function (options) {
   return {
+    groups: new exports.Groups(options),
+    roles: new exports.Roles(options),
     systems: new exports.Systems(options),
     servers: new exports.Servers(options),
-    groups: new exports.Groups(options),
     users: new exports.Users(options)
   };
 };

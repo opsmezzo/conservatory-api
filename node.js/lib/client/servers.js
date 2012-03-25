@@ -127,7 +127,8 @@ Servers.prototype.listGroup = function (group, callback) {
 Servers.prototype.update = function (server, callback) {
   this._request({
     method: 'PUT', 
-    path: '/servers/' + (server._id || server.id)
+    path: '/servers/' + (server._id || server.id),
+    body: server
   }, callback, function (res, result) {
     callback(null, result);
   });

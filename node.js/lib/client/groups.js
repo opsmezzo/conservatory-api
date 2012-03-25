@@ -1,5 +1,5 @@
 /*
- * servers.js: Client for the provisioner `groups` resource.
+ * groups.js: Client for the provisioner `groups` resource.
  *
  * (C) 2010, Nodejitsu Inc.
  *

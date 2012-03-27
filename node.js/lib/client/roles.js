@@ -62,15 +62,16 @@ Roles.prototype.list = function (callback) {
 };
 
 //
-// ### function update (user, callback)
+// ### function update (role, callback)
 // #### @role {object} Properties to update the role with.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Updates the role with the properties specified.
 //
-Roles.prototype.update = function (user, callback) {
+Roles.prototype.update = function (role, callback) {
   this._request({
     method: 'PUT', 
-    path: '/roles/' + (role._id || role.name)
+    path: '/roles/' + (role._id || role.name),
+    body: role
   }, callback, function (res, result) {
     callback(null, result);
   });

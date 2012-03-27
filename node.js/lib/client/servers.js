@@ -119,7 +119,7 @@ Servers.prototype.listGroup = function (group, callback) {
 };
 
 //
-// ### function list (server)
+// ### function update (server, callback)
 // #### @server {object} Properties to update the server with.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Updates the server with the properties specified.

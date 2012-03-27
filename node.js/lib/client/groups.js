@@ -73,15 +73,16 @@ Groups.prototype.listProvider = function (provider, callback) {
 };
 
 //
-// ### function update (user, callback)
+// ### function update (group, callback)
 // #### @group {object} Properties to update the group with.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Updates the group with the properties specified.
 //
-Groups.prototype.update = function (user, callback) {
+Groups.prototype.update = function (group, callback) {
   this._request({
     method: 'PUT', 
-    path: '/groups/' + (group._id || group.name)
+    path: '/groups/' + (group._id || group.name),
+    body: group
   }, callback, function (res, result) {
     callback(null, result);
   });

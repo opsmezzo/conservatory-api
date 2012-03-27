@@ -82,7 +82,8 @@ Users.prototype.list = function (callback) {
 Users.prototype.update = function (user, callback) {
   this._request({
     method: 'PUT', 
-    path: '/users/' + (user._id || user.username)
+    path: '/users/' + (user._id || user.username),
+    body: user
   }, callback, function (res, result) {
     callback(null, result);
   });

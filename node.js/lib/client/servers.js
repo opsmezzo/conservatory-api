@@ -23,6 +23,22 @@ var Servers = exports.Servers = function (options) {
 utile.inherits(Servers, client.Client);
 
 //
+// ### function add (server, callback)
+// #### @group {Object} Server to add to conservatory.
+// #### @callback {function} Continuation to pass control back to when complete.
+// Adds the specified `server` to conservatory.
+//
+Servers.prototype.add = function (server, callback) {
+  this._request({
+    method: 'POST', 
+    path: '/servers/' + server._id,
+    body: server
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
 // ### function provision (callback)
 // #### @options {object} Provisioning options being requested (role, count, etc).
 // #### @callback {function} Continuation to pass control back to when complete.

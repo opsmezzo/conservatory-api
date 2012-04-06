@@ -1,6 +1,7 @@
 {
   "name": "conservatory-api",
   "author": "Nodejitsu <info@nodejitsu.com>",
+  "private": true,
   "contributors": [
     { "name": "Charlie Robbins", "email": "charlie@nodejitsu.com" }
   ],

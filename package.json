@@ -1,7 +1,6 @@
 {
   "name": "conservatory-api",
   "author": "Nodejitsu <info@nodejitsu.com>",
-  "private": true,
   "contributors": [
     { "name": "Charlie Robbins", "email": "charlie@nodejitsu.com" }
   ],
@@ -11,6 +10,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/nodejitsu/conservatory-api.git"
+  },
+  "publishConfig": {
+    "registry": "http://reg.njitsu.net:5984"
   },
   "main": "./node.js/lib/client.js",
   "dependencies": {

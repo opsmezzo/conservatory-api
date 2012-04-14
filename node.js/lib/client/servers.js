@@ -149,3 +149,12 @@ Servers.prototype.update = function (server, callback) {
     callback(null, result);
   });
 };
+
+Servers.prototype.destroy = function (server, callback) {
+  this._request({
+    method: 'DELETE',
+    path: '/servers/' + (server._id || server.id || server)
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};

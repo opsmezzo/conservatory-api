@@ -23,15 +23,16 @@ var Envs = exports.Envs = function (options) {
 utile.inherits(Envs, client.Client);
 
 //
-// ### function create (env, callback)
-// #### @env {Object} Env to create.
+// ### function create (name, env, callback)
+// #### @name {string} Name of the environment to create.
+// #### @env {Object} Env settings to create.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Creates the specified `env`.
 //
-Envs.prototype.create = function (env, callback) {
+Envs.prototype.create = function (name, env, callback) {
   this._request({
     method: 'POST', 
-    path: '/envs/' + env.name, 
+    path: '/envs/' + name, 
     body: env
   }, callback, function (res, result) {
     callback(null, result);

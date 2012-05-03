@@ -75,3 +75,40 @@ Envs.prototype.destroy = function (name, callback) {
     callback(null, result);
   });
 };
+
+//
+// ### function set (name, path, value, callback)
+// #### @name {string} Name of the environment to set the `value` in.
+// #### @path {Array} Key path in the `settings` for `value`
+// #### @value {*} Value to set
+// #### @callback {function} Continuation to respond to when complete.
+//
+// Sets the `value` at the key `path` in the environment with the specified
+// name.
+//
+Envs.prototype.set = function (name, key, value, callback) {
+  this._request({
+    method: 'PUT',
+    path: '/envs/' + name + '/' + key,
+    body: value
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function clear (name, path, callback)
+// #### @name {string} Name of the environment to set the `value` in.
+// #### @path {Array} Key path in the `settings` to clear
+// #### @callback {function} Continuation to respond to when complete.
+//
+// Clears the key `path` in the environment with the specified name.
+//
+Envs.prototype.clear = function (name, key, callback) {
+  this._request({
+    method: 'DELETE',
+    path: '/envs/' + name + '/' + key
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};

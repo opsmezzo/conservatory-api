@@ -1,5 +1,5 @@
 /*
- * envs.js: Client for the `envs` resource.
+ * config.js: Client for the `config` resource.
  *
  * (C) 2010, Nodejitsu Inc.
  *
@@ -9,18 +9,18 @@ var utile = require('utile'),
     client = require('./client');
 
 //
-// ### function Envs (options)
+// ### function Config (options)
 // #### @options {Object} Options to use for this instance.
-// Constructor function for the Envs client to the Conservatory REST API.
+// Constructor function for the Config client to the Conservatory REST API.
 //
-var Envs = exports.Envs = function (options) {
+var Config = exports.Config = function (options) {
   client.Client.call(this, options);
 };
 
 //
 // Inherit from `client.Client`
 //
-utile.inherits(Envs, client.Client);
+utile.inherits(Config, client.Client);
 
 //
 // ### function create (name, env, callback)
@@ -29,10 +29,10 @@ utile.inherits(Envs, client.Client);
 // #### @callback {function} Continuation to pass control back to when complete.
 // Creates the specified `env`.
 //
-Envs.prototype.create = function (name, env, callback) {
+Config.prototype.create = function (name, env, callback) {
   this._request({
     method: 'POST', 
-    path: '/envs/' + name, 
+    path: '/config/' + name, 
     body: env
   }, callback, function (res, result) {
     callback(null, result);
@@ -45,20 +45,20 @@ Envs.prototype.create = function (name, env, callback) {
 // #### @callback {function} Continuation to pass control back to when complete.
 // Responds with information about the env with the specified `name`.
 //
-Envs.prototype.get = function (name, callback) {
-  this._request('/envs/' + name, callback, function (res, result) {
-    callback(null, result.env);
+Config.prototype.get = function (name, callback) {
+  this._request('/config/' + name, callback, function (res, result) {
+    callback(null, result.config);
   });
 };
 
 //
 // ### function list (callback)
 // #### @callback {function} Continuation to pass control back to when complete.
-// Lists all envs managed by the provisioner associated with this instance. 
+// Lists all config managed by the provisioner associated with this instance. 
 //
-Envs.prototype.list = function (callback) {
-  this._request('/envs', callback, function (res, result) {
-    callback(null, result.envs);
+Config.prototype.list = function (callback) {
+  this._request('/config', callback, function (res, result) {
+    callback(null, result.config);
   });
 };
 
@@ -68,10 +68,10 @@ Envs.prototype.list = function (callback) {
 // #### @callback {function} Continuation to pass control back to when complete.
 // Destroys the Env for the server with the specified name.
 //
-Envs.prototype.destroy = function (name, callback) {
+Config.prototype.destroy = function (name, callback) {
   this._request({
     method: 'DELETE', 
-    path: '/envs/' + name
+    path: '/config/' + name
   }, callback, function (res, result) {
     callback(null, result);
   });
@@ -87,10 +87,10 @@ Envs.prototype.destroy = function (name, callback) {
 // Sets the `value` at the key `path` in the environment with the specified
 // name.
 //
-Envs.prototype.set = function (name, key, value, callback) {
+Config.prototype.set = function (name, key, value, callback) {
   this._request({
     method: 'PUT',
-    path: '/envs/' + name + '/' + key,
+    path: '/config/' + name + '/' + key,
     body: value
   }, callback, function (res, result) {
     callback(null, result);
@@ -105,10 +105,10 @@ Envs.prototype.set = function (name, key, value, callback) {
 //
 // Clears the key `path` in the environment with the specified name.
 //
-Envs.prototype.clear = function (name, key, callback) {
+Config.prototype.clear = function (name, key, callback) {
   this._request({
     method: 'DELETE',
-    path: '/envs/' + name + '/' + key
+    path: '/config/' + name + '/' + key
   }, callback, function (res, result) {
     callback(null, result);
   });

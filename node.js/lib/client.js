@@ -6,7 +6,7 @@
  */
  
 exports.Client  = require('./client/client').Client;
-exports.Envs    = require('./client/envs').Envs;
+exports.Config  = require('./client/config').Config;
 exports.Groups  = require('./client/groups').Groups;
 exports.Roles   = require('./client/roles').Roles;
 exports.Systems = require('./client/systems').Systems;
@@ -15,7 +15,7 @@ exports.Users   = require('./client/users').Users;
 
 exports.createClient = function (options) {
   return {
-    envs: new exports.Envs(options),
+    config: new exports.Config(options),
     groups: new exports.Groups(options),
     roles: new exports.Roles(options),
     systems: new exports.Systems(options),

@@ -155,8 +155,8 @@ Users.prototype.addKey = Users.prototype.updateKey = function (name, keyname, da
   }
   
   this._request({
-    method: 'POST', 
-    path: '/' + ['keys', name, keyname].join('/'), 
+    method: 'PUT', 
+    path: '/' + ['users', name, 'keys', keyname].join('/'), 
     body: { key: data }
   }, callback, function (res, result) {
     callback(null);
@@ -177,7 +177,7 @@ Users.prototype.getKey = function (name, keyname, callback) {
     keyname = 'publicKey';
   }
   
-  this._request('/' + ['keys', name, keyname].join('/'), callback, function (res, result) {
+  this._request('/' + ['users', name, 'keys', keyname].join('/'), callback, function (res, result) {
     callback(null, result && result.key);
   });
 };

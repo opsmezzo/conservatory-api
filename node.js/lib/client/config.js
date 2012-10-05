@@ -30,6 +30,11 @@ utile.inherits(Config, client.Client);
 // Creates the specified `env`.
 //
 Config.prototype.create = function (name, env, callback) {
+  if (typeof env === 'function') {
+    callback = env;
+    env = {};
+  }
+
   this._request({
     method: 'POST', 
     path: '/config/' + name, 

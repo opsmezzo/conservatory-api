@@ -164,7 +164,7 @@ Users.prototype.addKey = Users.prototype.updateKey = function (name, keyname, da
 };
 
 //
-// ### function addKey | updateKey (name, keyname, data, callback)
+// ### function getKey (name, keyname, data, callback)
 // #### @name {string} Name of the user to add or update keys for.
 // #### @keyname {string} **Optional** Keyname to add or update.
 // #### @callback {function} Continuation to respond to when complete.
@@ -183,7 +183,7 @@ Users.prototype.getKey = function (name, keyname, callback) {
 };
 
 //
-// ### function addKey | updateKey (name, keyname, data, callback)
+// ### function getKeys (name, callback)
 // #### @name {string} **Optional** Name of the user to get all keys for.
 // #### @callback {function} Continuation to respond to when complete.
 // Retrieves all keys for the user with the specified `name`. If no `name`

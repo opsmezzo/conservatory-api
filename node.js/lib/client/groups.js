@@ -67,7 +67,7 @@ Groups.prototype.list = function (callback) {
 // Lists all groups managed by the provisioner associated with this instance. 
 //
 Groups.prototype.listProvider = function (provider, callback) {
-  this._request('/groups/' + provider + '/provider', callback, function (res, result) {
+  this._request('/providers/' + provider + '/groups', callback, function (res, result) {
     callback(null, result.groups);
   });
 };

@@ -51,6 +51,7 @@ Client.prototype.failCodes = {
   401: 'Not authorized',
   403: 'Forbidden',
   404: 'Item not found',
+  409: 'Conflict',
   500: 'Internal Server Error'
 };
 

@@ -162,6 +162,12 @@ Servers.prototype.update = function (server, callback) {
   });
 };
 
+//
+// ### function destroy (server, callback)
+// #### @server {string|object} Server (or id of server) to delete.
+// #### @callback {function} Continuation to pass control back to when complete.
+// Attempts to destroy the specified `server` from conservatory.
+//
 Servers.prototype.destroy = function (server, callback) {
   var url = server.group
     ? ['groups', server.group]

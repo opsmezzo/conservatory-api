@@ -48,7 +48,7 @@ Servers.prototype.provision = function (options, callback) {
   if (typeof options === 'string') {
     options = { role: options };
   }
-  
+
   options.count = options.count || 1;
   this._request({
     method: 'POST', 
@@ -71,15 +71,20 @@ Servers.prototype.getPosition = function (jobId, callback) {
 };
 
 //
-// ### function free (id, callback)
-// #### @id {string} Id of the server to free.
+// ### function free (options, callback)
+// #### @options {string|Object} Details about the server to free.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Attempts to free the server with the specified `id`.
 //
-Servers.prototype.free = function (id, callback) {
+Servers.prototype.free = function (options, callback) {
+  if (typeof options === 'string') {
+    options = { id: options };
+  }
+
   this._request({
     method: 'DELETE', 
-    path: '/provision/' + id
+    path: '/provision/' + options.id,
+    body: { group: options.group },
   }, callback, function (res, result) {
     callback(null, result);
   });

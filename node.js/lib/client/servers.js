@@ -185,3 +185,41 @@ Servers.prototype.destroy = function (server, callback) {
     callback(null, result);
   });
 };
+
+//
+// ### function getHistory (server, callback)
+// #### @server {string|Object} Server id or object to get history for
+// Responds with the history for the specified server
+//
+Servers.prototype.getHistory = function (server, callback) {
+  var url = server.group
+    ? ['groups', server.group]
+    : [];
+
+  this._request(
+    '/' + url.concat(['servers', server.id || server, 'history']).join('/'),
+    callback,
+    function (res, result) {
+      callback(null, result.history);
+    }
+  );
+};
+
+//
+// ### function getHistory (server, callback)
+// #### @server {Object} Server object to add history for
+// Adds the specified `server.history` to the specified `server`.
+//
+Server.prototype.addHistory = function (server, callback) {
+  var url = server.group
+    ? ['groups', server.group]
+    : [];
+
+  this._request({
+    method: 'PUT', 
+    path: '/' + url.concat(['servers', server.id, 'history']).join('/'),
+    body: server.history
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};

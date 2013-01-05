@@ -77,7 +77,7 @@ Systems.prototype.destroy = function (name, callback) {
 };
 
 //
-// ### function removeVersion (system, callback)
+// ### function removeVersion (name, version, callback)
 // #### @name {string} Name of the system to remove `version`.
 // #### @version {string} Version to remove from the system
 // #### @callback {function} Continuation to pass control back to when complete.
@@ -106,6 +106,48 @@ Systems.prototype.addVersion = function (system, callback) {
   }, callback, function (res, result) {
     callback(null, result);
   });  
+};
+
+//
+// ### function removeOwner (name, owners, callback)
+// #### @name {string} Name of the system to remove owners from.
+// #### @owners {string|Array} Owners to remove from the system
+// #### @callback {function} Continuation to pass control back to when complete.
+// Removes the `owners` from the system with the specified `name`.
+//
+Systems.prototype.removeOwner = function (name, owners, callback) {
+  owners = typeof owners === 'string'
+    ? [owners]
+    : owners;
+
+  this._request({
+    method: 'DELETE',
+    path: '/systems/' + name + '/owners',
+    body: owners
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function addOwner (name, owners, callback)
+// #### @name {string} Name of the system to add owners to.
+// #### @owners {string|Array} Owners to add to the system
+// #### @callback {function} Continuation to pass control back to when complete.
+// Adds the `owners` to the system with the specified `name`.
+//
+Systems.prototype.addOwner = function (name, owners, callback) {
+  owners = typeof owners === 'string'
+    ? [owners]
+    : owners;
+
+  this._request({
+    method: 'PUT',
+    path: '/systems/' + name + '/owners',
+    body: owners
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
 };
 
 //

@@ -98,6 +98,10 @@ Client.prototype._request = function (options, callback, success) {
   if (this._auth) {
     options.headers['Authorization'] = this._auth;
   }
+  
+  if (this.proxy) {
+    options.proxy = this.proxy;
+  }
 
   if (options.headers['content-type'] === 'application/json'
     && options.body) {

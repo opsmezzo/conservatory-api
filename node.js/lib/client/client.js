@@ -31,7 +31,11 @@ var Client = exports.Client = function (options) {
   this.config = {
     host: options.host || 'localhost',
     port: options.port || 9000,
-    auth: options.auth
+    protocol: options.protocol || 'http',
+    rejectUnauthorized: options.rejectUnauthorized,
+    auth: options.auth,
+    cert: options.cert,
+    key: options.key
   };
   
   if (options.auth && options.auth.username && options.auth.password) {
@@ -68,7 +72,7 @@ Client.prototype.successCodes = {
 // is configured to request against.
 //
 Client.prototype.__defineGetter__('remoteUri', function () {
-  return 'http://' + this.config.host + ':' + this.config.port;
+  return (this.config.protocol || 'http') + '://' + this.config.host + ':' + this.config.port;
 });
 
 //
@@ -101,6 +105,15 @@ Client.prototype._request = function (options, callback, success) {
   
   if (this.proxy) {
     options.proxy = this.proxy;
+  }
+
+  if (this.config.cert && this.config.key) {
+    options.key = this.config.key;
+    options.cert = this.config.cert;
+  }
+
+  if (typeof this.config.rejectUnauthorized !== 'undefined') {
+    options.rejectUnauthorized = this.config.rejectUnauthorized;
   }
 
   if (options.headers['content-type'] === 'application/json'

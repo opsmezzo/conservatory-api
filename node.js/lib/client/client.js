@@ -22,7 +22,7 @@ var Client = exports.Client = function (options) {
   if (typeof this.options.get !== 'function') {
     this.options.get = function (key) {
       return this[key];
-    }
+    };
   }
   
   // 

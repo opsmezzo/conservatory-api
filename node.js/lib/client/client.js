@@ -33,6 +33,7 @@ var Client = exports.Client = function (options) {
     port: options.port || 9000,
     protocol: options.protocol || 'http',
     rejectUnauthorized: options.rejectUnauthorized,
+    proxy: options.proxy,
     auth: options.auth,
     cert: options.cert,
     key: options.key
@@ -103,7 +104,7 @@ Client.prototype._request = function (options, callback, success) {
     options.headers['Authorization'] = this._auth;
   }
   
-  if (this.proxy) {
+  if (this.config.proxy) {
     options.proxy = this.proxy;
   }
 

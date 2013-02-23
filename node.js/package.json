@@ -16,7 +16,7 @@
     "registry": "http://reg.njitsu.net:5984"
   },
   "dependencies": {
-    "request": "2.x.x",
-    "utile": "0.0.x"
+    "request": "~2.14.x",
+    "utile": "~0.1.7"
   }
 }

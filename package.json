@@ -16,7 +16,7 @@
   },
   "main": "./node.js/lib/client.js",
   "dependencies": {
-    "request": "2.x.x",
-    "utile": "0.0.x"
+    "request": "~2.14.x",
+    "utile": "~0.1.7"
   }
 }

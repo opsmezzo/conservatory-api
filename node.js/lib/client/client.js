@@ -122,29 +122,50 @@ Client.prototype._request = function (options, callback, success) {
     options.body = JSON.stringify(options.body);
   }
 
-  return request(options, function (err, response, body) {
+  //
+  // Helper function for checking response codes
+  //
+  function isOk(err, res, body) {
     if (err) {
       return callback(err);
     }
 
-    var statusCode = response.statusCode.toString(),
-        result,
+    var statusCode = res.statusCode.toString(),
         error;
-        
-    try {
-      result = JSON.parse(body);
-    }
-    catch (ex) {
-      // Ignore Errors
-    }
-    
+
     if (Object.keys(self.failCodes).indexOf(statusCode) !== -1) {
       error = new Error('conservatory Error (' + statusCode + '): ' + self.failCodes[statusCode]);
-      error.result = result;
-      error.status = statusCode;
-      return callback(error);
+      if (body) {
+        error.result = body;
+      }
+      error.status = res.statusCode;
+      callback(error);
+      return false
     }
 
-    success(response, result);
-  });
+    return true;
+  }
+
+  if (success) {
+    return request(options, function onComplete(err, res, body) {
+      if (!isOk(err, res)) {
+        return;
+      }
+
+      var result;
+
+      try { result = JSON.parse(body) }
+      catch (ex) { }
+
+      success(res, result);
+    });
+  }
+
+  //
+  // If no `success` function is supplied then
+  // just return the raw `request` stream, but check
+  // the response against any `failCodes`.
+  //
+  return request(options)
+    .on('response', isOk.bind(null, null));
 };

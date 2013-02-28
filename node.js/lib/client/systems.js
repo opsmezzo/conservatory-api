@@ -175,7 +175,20 @@ Systems.prototype.upload = function (name, version, callback) {
 // Returns an HTTP stream for downloading the `version` from the `system`.
 //
 Systems.prototype.download = function (name, version, callback) {
-  return this._request('/systems/' + name + '/' + version, callback, function (res, result) {
-    callback(null, res);
-  });
+  var responded;
+
+  //
+  // Helper function for checking multiple
+  // return conditions.
+  //
+  function respond(err) {
+    if (!responded) {
+      responded = true;
+      callback(err);
+    }
+  }
+
+  return this._request('/systems/' + name + '/' + version, callback)
+    .on('end', respond.bind(null, null))
+    .on('error', respond);
 };

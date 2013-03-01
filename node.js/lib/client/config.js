@@ -118,3 +118,24 @@ Config.prototype.clear = function (name, key, callback) {
     callback(null, result);
   });
 };
+
+//
+// ### function servers (group, callback)
+// #### @group {string} **Optional** Group to fetch server config for
+// #### @callback {function} Continuation to respond to when complete.
+//
+// Gets the server configuration for the specified `group` (if any).
+//
+Config.prototype.servers = function (group, callback) {
+  if (!callback && typeof group === 'function') {
+    callback = group;
+    group = null;
+  }
+
+  this._request({
+    method: 'GET',
+    path: '/' + ['config', 'servers', group].filter(Boolean).join('/')
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};

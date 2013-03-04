@@ -185,3 +185,31 @@ Servers.prototype.destroy = function (server, callback) {
     callback(null, result);
   });
 };
+
+//
+// ### function pooled (callback)
+// #### @callback {function} Continuation to respond to.
+// Responds with all servers known to the provisioner pool.
+//
+Servers.prototype.pooled = function (callback) {
+  this._request({
+    method: 'GET',
+    path: '/pool',
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};
+
+//
+// ### function available (callback)
+// #### @callback {function} Continuation to respond to.
+// Responds with all available servers in the provisioner pool
+//
+Servers.prototype.available = function (callback) {
+  this._request({
+    method: 'GET',
+    path: '/pool/available',
+  }, callback, function (res, result) {
+    callback(null, result);
+  });
+};

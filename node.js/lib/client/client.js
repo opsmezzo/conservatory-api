@@ -136,7 +136,8 @@ Client.prototype._request = function (options, callback, success) {
     if (Object.keys(self.failCodes).indexOf(statusCode) !== -1) {
       error = new Error('conservatory Error (' + statusCode + '): ' + self.failCodes[statusCode]);
       if (body) {
-        error.result = body;
+        try { error.result = JSON.parse(body) }
+        catch (ex) {}
       }
       error.status = res.statusCode;
       callback(error);
@@ -148,7 +149,7 @@ Client.prototype._request = function (options, callback, success) {
 
   if (success) {
     return request(options, function onComplete(err, res, body) {
-      if (!isOk(err, res)) {
+      if (!isOk(err, res, body)) {
         return;
       }
 

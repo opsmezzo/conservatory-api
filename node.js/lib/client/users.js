@@ -199,3 +199,20 @@ Users.prototype.getKeys = function (name, callback) {
     callback(null, result && result.keys);
   });
 };
+
+//
+// ### function servers (name, callback)
+// #### @name {string} **Optional** Name of the user to get servers created by.
+// #### @callback {function} Continuation to respond to when complete.
+// Retrieves all servers created by the user with the specified `name`.
+//
+Users.prototype.servers = function (name, callback) {
+  if (!callback && typeof name === 'function') {
+    callback = name;
+    return callback(new Error('username is required.'))
+  }
+
+  this._request('/' + ['users', name, 'servers'].join('/'), callback, function (res, result) {
+    callback(null, result && result.servers);
+  });
+};

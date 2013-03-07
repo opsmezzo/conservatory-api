@@ -213,6 +213,6 @@ Users.prototype.servers = function (name, callback) {
   }
 
   this._request('/' + ['users', name, 'servers'].join('/'), callback, function (res, result) {
-    callback(null, result && result.servers);
+    callback(null, (result && result.servers) || []);
   });
 };

@@ -5,7 +5,7 @@
     { "name": "Charlie Robbins", "email": "charlie@nodejitsu.com" },
     { "name": "Maciej Malecki", "email": "maciej@nodejitsu.com" }
   ],
-  "version": "0.6.0",
+  "version": "0.6.2",
   "description": "conservatory API client wrapper",
   "homepage": "http://github.com/nodejitsu/conservatory-api",
   "repository": {

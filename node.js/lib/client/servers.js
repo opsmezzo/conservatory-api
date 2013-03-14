@@ -199,3 +199,26 @@ Servers.prototype.pooled = function (callback) {
     callback(null, result);
   });
 };
+
+//
+// ### function tagged (options, callback)
+// #### @options {Object|Array|string} Options to get tags for
+// #### @callback {function} Continuation to respond to.
+// Responds with all servers with the specified tag options.
+//
+Servers.prototype.tagged = function (options, callback) {
+  if (typeof options === 'string') {
+    options = { tags: [options] };
+  }
+  else if (Array.isArray(options)) {
+    options = { tags: options };    
+  }
+  
+  this._request({
+    method: 'POST',
+    path: '/servers/tagged',
+    body: options
+  }, callback, function (res, result) {
+    callback(null, result.servers);
+  });
+};

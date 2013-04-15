@@ -13,9 +13,6 @@
     "url": "https://github.com/nodejitsu/conservatory-api.git"
   },
   "main": "./lib/client.js",
-  "publishConfig": {
-    "registry": "http://reg.njitsu.net:5984"
-  },
   "dependencies": {
     "request": "~2.14.x",
     "utile": "~0.1.7"

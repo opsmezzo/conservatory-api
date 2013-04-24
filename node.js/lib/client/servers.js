@@ -222,3 +222,18 @@ Servers.prototype.tagged = function (options, callback) {
     callback(null, result.servers);
   });
 };
+
+//
+// ### function listCluster (cluster, callback)
+// #### @cluster {string} Cluster name
+// #### @callback {function} Continuation to respond to.
+// Respods with all servers in cluster `cluster`.
+//
+Servers.prototype.listCluster = function (cluster, callback) {
+  this._request({
+    method: 'GET',
+    path: '/clusters/' + (cluster.name || cluster) + '/servers'
+  }, callback, function (res, result) {
+    callback(null, result.servers);
+  });
+};

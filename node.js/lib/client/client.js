@@ -4,7 +4,7 @@
  * (C) 2010, Nodejitsu Inc.
  *
  */
- 
+
 var events = require('events'),
     utile = require('utile'),
     request = require('request'),
@@ -18,14 +18,14 @@ var events = require('events'),
 var Client = exports.Client = function (options) {
   events.EventEmitter.call(this);
   this.options = options || {};
-    
+
   if (typeof this.options.get !== 'function') {
     this.options.get = function (key) {
       return this[key];
     };
   }
-  
-  // 
+
+  //
   // TODO (indexzero): Configure the provisioner port globally somewhere.
   //
   this.config = {
@@ -38,7 +38,7 @@ var Client = exports.Client = function (options) {
     cert: options.cert,
     key: options.key
   };
-  
+
   if (options.auth && options.auth.username && options.auth.password) {
     this._auth = 'Basic ' + base64.encode([options.auth.username, options.auth.password].join(':'));
   }
@@ -86,24 +86,24 @@ Client.prototype.__defineGetter__('remoteUri', function () {
 //
 Client.prototype._request = function (options, callback, success) {
   var self = this;
-  
+
   if (typeof options === 'string') {
     options = { path: options };
   }
-  
+
   options.method  = options.method || 'GET';
   options.uri     = this.remoteUri + options.path;
   options.headers = options.headers || {};
   options.headers['content-type'] = options.headers['content-type'] || 'application/json';
-    
+
   if (!this._auth && this.config.auth.username && this.config.auth.password) {
     this._auth = 'Basic ' + base64.encode([this.config.auth.username, this.config.auth.password].join(':'));
   }
-  
+
   if (this._auth) {
     options.headers['Authorization'] = this._auth;
   }
-  
+
   if (this.config.proxy) {
     options.proxy = this.proxy;
   }
@@ -132,7 +132,8 @@ Client.prototype._request = function (options, callback, success) {
   //
   function isOk(err, res, body) {
     if (err) {
-      return callback(err);
+      callback(err);
+      return false;
     }
 
     var statusCode = res.statusCode.toString(),

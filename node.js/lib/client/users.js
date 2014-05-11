@@ -75,14 +75,15 @@ Users.prototype.list = function (callback) {
 
 //
 // ### function update (user, callback)
+// #### @name {object} Name of the user to update.
 // #### @user {object} Properties to update the user with.
 // #### @callback {function} Continuation to pass control back to when complete.
 // Updates the user with the properties specified.
 //
-Users.prototype.update = function (user, callback) {
+Users.prototype.update = function (name, user, callback) {
   this._request({
     method: 'PUT', 
-    path: '/users/' + (user._id || user.username),
+    path: '/users/' + name,
     body: user
   }, callback, function (res, result) {
     callback(null, result);
